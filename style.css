@@ -1,58 +1,27 @@
 /* =====================================================================
    SOFT-UI — Hybrid Glassmorphism / Neomorphism Design System
-   Drop this file in and use the classes below on any markup.
-   No HTML included on purpose — this is a pure utility/component kit.
+   Pure CSS component kit. No markup shipped — apply classes to your own.
+   Pair with location-map.js if you want the live country-level map bg.
    =====================================================================
 
-   QUICK REFERENCE
-   ----------------------------------------------------------------------
-   Surfaces
-     .surface                 base pastel gradient background (put on <body>)
-     .panel                   convex panel (pops out)      + .panel--sm/lg/xl
-     .well                    concave well (sinks in)       + .well--sm/lg
-     .glass                   frosted glass surface          + .glass--strong
-     .flat                    flat panel, no shadow (for nesting)
-
-   Buttons
-     .btn                     base button, pick ONE style modifier:
-       .btn--convex             raised neomorphic button
-       .btn--glass               frosted glass button
-       .btn--pressed              permanently inset (toggled/active look)
-       .btn--primary               solid accent gradient (convex+color)
-     size:  .btn--sm / .btn--lg
-     shape: .btn--pill / .btn--icon (square icon-only button)
-
-   Form controls
-     .input-well               inset text input wrapper
-     .toggle                   neomorphic switch
-     .checkbox-soft             inset checkbox
-     .slider-soft                inset range slider
-     .segmented / .segmented__btn   pill tab switcher
-
-   Content modules
-     .stat-block                label + big figure
-     .badge                     small pill label (+ color modifiers)
-     .avatar                    circular avatar chip
-     .progress-bar / .progress-bar__fill
-     .ring-stat                 circular % ring (SVG-based, see comment)
-     .list-row                  icon + text + trailing value row
-     .divider                   soft gradient hairline
-     .tooltip-glass              floating glass tooltip
-     .modal-glass / .modal-glass__panel   glass modal scrim + panel
-     .card-tilt                  panel with hover lift (optional motion)
-
-   Utility
-     .icon-chip                  small rounded icon container (neomorphic)
-     .scrollbar-soft              styled scrollbar for wells/panels
+   CONTENTS
+   1. Tokens (light + dark theme)
+   2. Base surface (background, optional map/vivid backdrops)
+   3. Surfaces: panel (convex) / well (concave) / glass (frosted+liquid)
+   4. Buttons
+   5. Form controls
+   6. Content modules (stats, badges, avatars, progress, lists...)
+   7. Utilities
+   8. Accessibility
    ===================================================================== */
 
 
 /* =====================================================================
-   1. TOKENS — edit these to re-theme everything at once
+   1. TOKENS
    ===================================================================== */
 
 :root{
-  /* base pastel gradient */
+  /* base pastel gradient (light theme) */
   --su-bg-a: #e0e8f5;
   --su-bg-b: #ccd7e9;
 
@@ -62,7 +31,7 @@
   --su-ink-500: #6f7996;
   --su-ink-400: #8891ab;
 
-  /* accents — swap freely */
+  /* accents */
   --su-accent: #5b6ee8;
   --su-accent-soft: #8f9dfa;
   --su-mint: #7fd0c4;
@@ -77,58 +46,36 @@
   --su-glass-strong: rgba(235, 240, 250, 0.68);
   --su-glass-border: rgba(255, 255, 255, 0.65);
 
-  /* neomorphic dual-shadow pair — tuned to the pastel gradient above.
-     if you change --su-panel/background, re-derive these two so the
-     "light" is a tint lighter and "dark" is a tint darker. */
+  /* neomorphic dual-shadow pair. Re-derive if you change --su-panel:
+     "light" a tint lighter than the panel, "dark" a tint darker. */
   --su-sh-light: #ffffff;
   --su-sh-dark: #aebbd6;
 
-  /* radii scale */
+  /* radii */
   --su-r-sm: 12px;
   --su-r-md: 18px;
   --su-r-lg: 24px;
   --su-r-xl: 32px;
   --su-r-pill: 999px;
 
-  /* shadow scale (convex) — offset/blur pairs, reused everywhere */
-  --su-convex-sm:
-    -4px -4px 9px var(--su-sh-light),
-     5px  5px 11px var(--su-sh-dark);
-  --su-convex-md:
-    -7px -7px 16px var(--su-sh-light),
-     8px  8px 20px var(--su-sh-dark);
-  --su-convex-lg:
-    -10px -10px 24px var(--su-sh-light),
-     12px  12px 28px var(--su-sh-dark);
+  /* shadow scale — convex (raised) */
+  --su-convex-sm: -4px -4px 9px var(--su-sh-light), 5px 5px 11px var(--su-sh-dark);
+  --su-convex-md: -7px -7px 16px var(--su-sh-light), 8px 8px 20px var(--su-sh-dark);
+  --su-convex-lg: -10px -10px 24px var(--su-sh-light), 12px 12px 28px var(--su-sh-dark);
 
-  /* shadow scale (concave / inset) */
-  --su-inset-sm:
-    inset -3px -3px 6px var(--su-sh-light),
-    inset  4px  4px 8px var(--su-sh-dark);
-  --su-inset-md:
-    inset -5px -5px 11px var(--su-sh-light),
-    inset  6px  6px 14px var(--su-sh-dark);
-  --su-inset-lg:
-    inset -7px -7px 15px var(--su-sh-light),
-    inset  8px  8px 18px var(--su-sh-dark);
+  /* shadow scale — inset (concave) */
+  --su-inset-sm: inset -3px -3px 6px var(--su-sh-light), inset 4px 4px 8px var(--su-sh-dark);
+  --su-inset-md: inset -5px -5px 11px var(--su-sh-light), inset 6px 6px 14px var(--su-sh-dark);
+  --su-inset-lg: inset -7px -7px 15px var(--su-sh-light), inset 8px 8px 18px var(--su-sh-dark);
 
-  /* glass shadow (soft ambient lift, used with backdrop-filter) */
-  --su-glass-shadow:
-    0 1px 0 rgba(255,255,255,0.7) inset,
-    0 10px 24px rgba(148, 163, 209, 0.32);
+  --su-glass-shadow: 0 1px 0 rgba(255,255,255,0.7) inset, 0 10px 24px rgba(148, 163, 209, 0.32);
 
   --su-blur: 18px;
   --su-blur-strong: 26px;
-
   --su-transition: 180ms ease;
-
-  /* ===================================================================
-     DARK NEOMORPHIC THEME — set data-theme="dark" on <html> or <body>
-     to switch every surface/button/control to the dark, glowing style
-     seen in premium smart-home / fintech dashboards.
-     =================================================================== */
 }
 
+/* dark theme — set data-theme="dark" on <html> or <body> */
 [data-theme="dark"]{
   --su-bg-a: #1c2030;
   --su-bg-b: #12141e;
@@ -140,9 +87,6 @@
 
   --su-accent: #7c8cf5;
   --su-accent-soft: #a5b0fb;
-  --su-mint: #7fd0c4;
-  --su-amber: #f0b98f;
-  --su-rose: #e598b0;
   --su-success: #6bd19a;
   --su-danger: #f28d97;
 
@@ -151,18 +95,16 @@
   --su-glass-strong: rgba(38, 43, 61, 0.7);
   --su-glass-border: rgba(255, 255, 255, 0.08);
 
-  /* dark neomorphism: "light" becomes a soft glow, "dark" becomes deep shadow */
+  /* dark neomorphism: "light" becomes a faint glow, "dark" a real shadow */
   --su-sh-light: rgba(255, 255, 255, 0.06);
   --su-sh-dark: rgba(0, 0, 0, 0.55);
 
-  --su-glass-shadow:
-    0 1px 0 rgba(255,255,255,0.06) inset,
-    0 10px 24px rgba(0, 0, 0, 0.45);
+  --su-glass-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 10px 24px rgba(0, 0, 0, 0.45);
 }
 
 
 /* =====================================================================
-   2. BASE SURFACE — apply .surface to <body> or a full-bleed wrapper
+   2. BASE SURFACE
    ===================================================================== */
 
 .surface{
@@ -173,20 +115,7 @@
   min-height: 100%;
 }
 
-/* optional ambient sheen — add to a fixed full-viewport div */
-.surface-sheen{
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background:
-    radial-gradient(1200px 600px at 12% -10%, rgba(255,255,255,0.55), transparent 60%),
-    radial-gradient(900px 500px at 110% 10%, rgba(255,255,255,0.35), transparent 55%);
-}
-
-/* -- vivid wallpaper for liquid glass demos —
-   Tahoe-style glass reads best over saturated color, not flat pastel.
-   Apply instead of / on top of .surface: class="surface surface-vivid" -- */
+/* saturated multi-color backdrop, for showing off liquid-glass panels */
 .surface-vivid{
   background:
     radial-gradient(1000px 700px at 15% 10%, #ff9a8b 0%, transparent 55%),
@@ -196,31 +125,52 @@
   background-attachment: fixed;
 }
 
-/* -- dark world-map surface --
-   Low-detail, dark-themed backdrop meant to sit behind a real map image
-   (satellite/vector tiles from your map provider) or the placeholder
-   texture below if you don't have one wired up yet.
+/* -- live location-map surface --
+   Fetching the user's real location and rendering a map needs JS, not
+   CSS — see location-map.js. That script finds an <img class="map-img">
+   inside an element with .surface-map and points it at a country/
+   region-level static map, defaulting to a whole-earth view if location
+   can't be determined. This class supplies the dark container + the
+   filter that desaturates/darkens the (naturally light) map tiles and
+   flattens their detail so it reads as a quiet backdrop, not a UI in
+   its own right:
 
-   Usage once you have a map image (e.g. a static-map URL centered on
-   the user's coords, defaulting to a whole-earth view when no location
-   is available — that centering logic is JS, not CSS):
+     <div class="surface surface-map">
+       <img class="map-img" alt="">
+     </div>
 
-     <div class="surface surface-map"
-          style="background-image:url('your-dark-map.png');"></div>
-
-   Until then, .surface-map alone renders a dark navy field with a very
-   faint dot-grid so panels have something moody to float over. */
+   Structure: .surface-map is a positioned dark container; .map-img is
+   absolutely fit behind everything else via z-index — put your real
+   content in normal-flow siblings after it. */
 .surface-map{
+  position: relative;
   background-color: #0d0f1a;
-  background-image:
-    radial-gradient(circle at 25% 30%, rgba(124,140,245,0.10), transparent 45%),
-    radial-gradient(circle at 75% 65%, rgba(89,201,255,0.08), transparent 45%),
-    radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
-  background-size: auto, auto, 22px 22px;
-  background-position: center;
-  background-repeat: no-repeat, no-repeat, repeat;
-  background-attachment: fixed;
+  overflow: hidden;
+  isolation: isolate;
 }
+.surface-map .map-img{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 600ms ease;
+  /* turns light OSM-style tiles dark, desaturated and low-contrast */
+  filter: invert(1) hue-rotate(180deg) saturate(0.35) brightness(0.62) contrast(0.9);
+}
+.surface-map .map-img.is-loaded{ opacity: 1; }
+/* soft vignette so panels stay legible over the map */
+.surface-map::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(120% 100% at 50% 30%, transparent 30%, rgba(10,12,20,0.65) 100%);
+  pointer-events: none;
+}
+.surface-map > *:not(.map-img){ position: relative; z-index: 2; }
 
 
 /* =====================================================================
@@ -228,14 +178,13 @@
    ===================================================================== */
 
 .panel{
+  position: relative;
   background: var(--su-panel);
   border-radius: var(--su-r-xl);
   padding: 24px;
   box-shadow: var(--su-convex-lg);
-  position: relative;
 }
-/* thin light-refraction line along the top edge — purely decorative */
-.panel::before{
+.panel::before{ /* thin decorative light-refraction line along the top edge */
   content: "";
   position: absolute;
   inset: 1px 1px auto 1px;
@@ -245,8 +194,8 @@
   pointer-events: none;
 }
 .panel--sm{ padding: 16px; border-radius: var(--su-r-md); box-shadow: var(--su-convex-sm); }
-.panel--lg{ padding: 30px; border-radius: var(--su-r-xl); box-shadow: var(--su-convex-lg); }
-.panel--xl{ padding: 36px; border-radius: var(--su-r-xl); box-shadow: var(--su-convex-lg); }
+.panel--lg{ padding: 30px; }
+.panel--xl{ padding: 36px; }
 
 .well{
   background: var(--su-panel);
@@ -255,7 +204,7 @@
   box-shadow: var(--su-inset-md);
 }
 .well--sm{ padding: 12px; border-radius: var(--su-r-sm); box-shadow: var(--su-inset-sm); }
-.well--lg{ padding: 24px; border-radius: var(--su-r-lg); box-shadow: var(--su-inset-lg); }
+.well--lg{ padding: 24px; box-shadow: var(--su-inset-lg); }
 
 .glass{
   background: var(--su-glass);
@@ -272,12 +221,11 @@
   -webkit-backdrop-filter: blur(var(--su-blur-strong)) saturate(170%);
 }
 
-/* -- liquid glass (macOS Tahoe style) --
-   heavier blur/saturation, brighter rim light, a soft specular sweep
-   across the top edge, and larger, softer corner radii. Stack on top
-   of .panel or .glass: class="panel panel--liquid" -- */
-.panel--liquid,
-.glass--liquid{
+/* liquid glass (macOS Tahoe style) — heavier blur, bright rim, specular
+   sweep, larger radius. Stack on .panel/.glass: class="panel panel--liquid" */
+.panel--liquid, .glass--liquid{
+  position: relative;
+  overflow: hidden;
   background: linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.04));
   border: 1px solid rgba(255,255,255,0.35);
   border-radius: var(--su-r-xl);
@@ -287,21 +235,8 @@
     0 1px 1px rgba(255,255,255,0.5) inset,
     0 -1px 1px rgba(255,255,255,0.15) inset,
     0 18px 40px rgba(0,0,0,0.18);
-  overflow: hidden;
-  position: relative;
 }
-[data-theme="dark"] .panel--liquid,
-[data-theme="dark"] .glass--liquid{
-  background: linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.02));
-  border: 1px solid rgba(255,255,255,0.14);
-  box-shadow:
-    0 1px 1px rgba(255,255,255,0.18) inset,
-    0 -1px 1px rgba(255,255,255,0.05) inset,
-    0 18px 40px rgba(0,0,0,0.5);
-}
-/* specular sweep — a bright diagonal highlight like light hitting curved glass */
-.panel--liquid::after,
-.glass--liquid::after{
+.panel--liquid::after, .glass--liquid::after{ /* specular sweep */
   content: "";
   position: absolute;
   top: -60%; left: -20%;
@@ -310,14 +245,18 @@
   transform: rotate(-12deg);
   pointer-events: none;
 }
+[data-theme="dark"] .panel--liquid, [data-theme="dark"] .glass--liquid{
+  background: linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow:
+    0 1px 1px rgba(255,255,255,0.18) inset,
+    0 -1px 1px rgba(255,255,255,0.05) inset,
+    0 18px 40px rgba(0,0,0,0.5);
+}
 
-/* -- flat liquid glass (less 3D) --
-   same frosted-glass material as .panel--liquid but with the specular
-   sweep and deep drop-shadow removed, so it reads as a flat pane of
-   glass rather than a raised 3D card. Use instead of .panel--liquid
-   when you want minimal depth: class="panel panel--liquid-flat" -- */
-.panel--liquid-flat,
-.glass--liquid-flat{
+/* flat liquid glass — same material, no specular sweep or deep shadow,
+   reads as a flat pane rather than a raised 3D card */
+.panel--liquid-flat, .glass--liquid-flat{
   background: rgba(255,255,255,0.08);
   border: 1px solid rgba(255,255,255,0.18);
   border-radius: var(--su-r-xl);
@@ -325,90 +264,15 @@
   -webkit-backdrop-filter: blur(28px) saturate(160%);
   box-shadow: 0 1px 0 rgba(255,255,255,0.12) inset;
 }
-[data-theme="dark"] .panel--liquid-flat,
-[data-theme="dark"] .glass--liquid-flat{
+[data-theme="dark"] .panel--liquid-flat, [data-theme="dark"] .glass--liquid-flat{
   background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.1);
   box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset;
 }
-.btn--liquid{
-  color: var(--su-ink-700);
-  background: linear-gradient(180deg, rgba(255,255,255,0.35), rgba(255,255,255,0.1));
-  border: 1px solid rgba(255,255,255,0.5);
-  border-radius: var(--su-r-pill);
-  backdrop-filter: blur(22px) saturate(190%);
-  -webkit-backdrop-filter: blur(22px) saturate(190%);
-  box-shadow:
-    0 1px 1px rgba(255,255,255,0.6) inset,
-    0 8px 20px rgba(0,0,0,0.12);
-  transition: transform var(--su-transition), box-shadow var(--su-transition), background var(--su-transition);
-}
-.btn--liquid:hover{
-  transform: translateY(-2px);
-  background: linear-gradient(180deg, rgba(255,255,255,0.45), rgba(255,255,255,0.14));
-}
-.btn--liquid:active{
-  transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15) inset;
-}
-[data-theme="dark"] .btn--liquid{
-  color: var(--su-ink-900);
-  background: linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.04));
-  border: 1px solid rgba(255,255,255,0.18);
-  box-shadow:
-    0 1px 1px rgba(255,255,255,0.2) inset,
-    0 8px 20px rgba(0,0,0,0.4);
-}
-.btn--liquid.btn--primary{
-  color: #fff;
-  background: linear-gradient(180deg, rgba(124,140,245,0.9), rgba(91,110,232,0.75));
-  border: 1px solid rgba(255,255,255,0.5);
-  box-shadow:
-    0 1px 1px rgba(255,255,255,0.5) inset,
-    0 10px 24px rgba(91,110,232,0.4);
-}
 
-/* -- glow-border button (no vertical press movement) --
-   flat glass button that lights up its border/ring instead of moving
-   or darkening on hover/press. Color is customizable per-button via
-   the --glow-color custom property.
-   <button class="btn btn--glow" style="--glow-color:#7c8cf5;">Save</button> -- */
-.btn--glow{
-  --glow-color: var(--su-accent);
-  color: var(--su-ink-700);
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.16);
-  border-radius: var(--su-r-pill);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  box-shadow: 0 0 0 0 transparent;
-  transition: box-shadow var(--su-transition), border-color var(--su-transition), background var(--su-transition);
-}
-[data-theme="dark"] .btn--glow{ color: var(--su-ink-900); }
-.btn--glow:hover{
-  border-color: var(--glow-color);
-  box-shadow: 0 0 0 1px var(--glow-color), 0 0 16px 0 color-mix(in srgb, var(--glow-color) 55%, transparent);
-}
-.btn--glow:focus-visible{
-  border-color: var(--glow-color);
-  box-shadow: 0 0 0 1px var(--glow-color), 0 0 16px 0 color-mix(in srgb, var(--glow-color) 55%, transparent);
-  outline: none;
-}
-.btn--glow.is-active,
-.btn--glow:active{
-  border-color: var(--glow-color);
-  background: color-mix(in srgb, var(--glow-color) 16%, transparent);
-  box-shadow: 0 0 0 1px var(--glow-color), 0 0 20px 2px color-mix(in srgb, var(--glow-color) 60%, transparent);
-  transform: none; /* explicitly no press movement */
-}
-
-/* flat, shadowless — use for content nested *inside* a panel/well so
+/* flat, shadowless — for content nested *inside* a panel/well so
    shadows don't stack */
-.flat{
-  background: transparent;
-  box-shadow: none;
-  border-radius: var(--su-r-md);
-}
+.flat{ background: transparent; box-shadow: none; border-radius: var(--su-r-md); }
 
 
 /* =====================================================================
@@ -422,85 +286,106 @@
   gap: 8px;
   border: none;
   cursor: pointer;
-  font-family: inherit;
+  font: inherit;
   font-size: 13.5px;
   font-weight: 600;
   color: var(--su-ink-700);
   padding: 12px 20px;
   border-radius: var(--su-r-md);
   background: var(--su-panel);
-  transition: transform var(--su-transition), box-shadow var(--su-transition), color var(--su-transition);
+  transition: transform var(--su-transition), box-shadow var(--su-transition), color var(--su-transition), border-color var(--su-transition), background var(--su-transition);
 }
 .btn:active{ transform: translateY(1px); }
-.btn--glow:active,
-.btn--no-press:active{ transform: none; }
 .btn:focus-visible{ outline: 2px solid var(--su-accent); outline-offset: 2px; }
 
-/* -- raised / convex (default look for most buttons) -- */
-.btn--convex{
-  box-shadow: var(--su-convex-sm);
-}
+.btn--convex{ box-shadow: var(--su-convex-sm); }
 .btn--convex:hover{ transform: translateY(-1px); }
-.btn--convex:active{
-  box-shadow: var(--su-inset-sm);
-  transform: translateY(0);
-}
+.btn--convex:active{ box-shadow: var(--su-inset-sm); transform: translateY(0); }
 
-/* -- frosted glass button -- */
 .btn--glass{
-  color: var(--su-ink-700);
   background: rgba(255,255,255,0.28);
   border: 1px solid rgba(255,255,255,0.7);
   backdrop-filter: blur(16px) saturate(160%);
   -webkit-backdrop-filter: blur(16px) saturate(160%);
-  box-shadow:
-    0 1px 0 rgba(255,255,255,0.8) inset,
-    0 6px 16px rgba(148, 163, 209, 0.28);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.8) inset, 0 6px 16px rgba(148, 163, 209, 0.28);
 }
 .btn--glass:hover{
   transform: translateY(-2px);
-  box-shadow:
-    0 1px 0 rgba(255,255,255,0.9) inset,
-    0 10px 22px rgba(148, 163, 209, 0.36);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.9) inset, 0 10px 22px rgba(148, 163, 209, 0.36);
 }
 
-/* -- permanently pressed / inset, e.g. active filter chip -- */
-.btn--pressed{
-  box-shadow: var(--su-inset-sm);
-  color: var(--su-accent);
-}
+.btn--pressed{ box-shadow: var(--su-inset-sm); color: var(--su-accent); }
 
-/* -- primary: solid accent gradient, convex -- */
 .btn--primary{
   color: #fff;
   background: linear-gradient(145deg, var(--su-accent-soft), var(--su-accent));
-  box-shadow:
-    -4px -4px 10px rgba(255,255,255,0.5),
-    5px 5px 14px rgba(91,110,232,0.38);
+  box-shadow: -4px -4px 10px rgba(255,255,255,0.5), 5px 5px 14px rgba(91,110,232,0.38);
 }
 .btn--primary:hover{ transform: translateY(-1px); }
-.btn--primary:active{
-  box-shadow: inset 3px 3px 8px rgba(45,55,150,0.4);
-  transform: translateY(0);
+.btn--primary:active{ box-shadow: inset 3px 3px 8px rgba(45,55,150,0.4); transform: translateY(0); }
+
+/* liquid glass button */
+.btn--liquid{
+  border-radius: var(--su-r-pill);
+  background: linear-gradient(180deg, rgba(255,255,255,0.35), rgba(255,255,255,0.1));
+  border: 1px solid rgba(255,255,255,0.5);
+  backdrop-filter: blur(22px) saturate(190%);
+  -webkit-backdrop-filter: blur(22px) saturate(190%);
+  box-shadow: 0 1px 1px rgba(255,255,255,0.6) inset, 0 8px 20px rgba(0,0,0,0.12);
+}
+.btn--liquid:hover{
+  transform: translateY(-2px);
+  background: linear-gradient(180deg, rgba(255,255,255,0.45), rgba(255,255,255,0.14));
+}
+.btn--liquid:active{ transform: translateY(0); box-shadow: 0 2px 6px rgba(0,0,0,0.15) inset; }
+[data-theme="dark"] .btn--liquid{
+  color: var(--su-ink-900);
+  background: linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.04));
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 1px 1px rgba(255,255,255,0.2) inset, 0 8px 20px rgba(0,0,0,0.4);
+}
+.btn--liquid.btn--primary{
+  color: #fff;
+  background: linear-gradient(180deg, rgba(124,140,245,0.9), rgba(91,110,232,0.75));
+  border: 1px solid rgba(255,255,255,0.5);
+  box-shadow: 0 1px 1px rgba(255,255,255,0.5) inset, 0 10px 24px rgba(91,110,232,0.4);
 }
 
-/* size modifiers — combine with any style above */
+/* glow-border button — flat glass, never moves on press, lights up its
+   border/ring instead. Color is customizable per button:
+   <button class="btn btn--glow" style="--glow-color:#7c8cf5;">Save</button>
+   add .is-active to keep a button permanently lit (e.g. current nav item) */
+.btn--glow{
+  --glow-color: var(--su-accent);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: var(--su-r-pill);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  box-shadow: 0 0 0 0 transparent;
+}
+[data-theme="dark"] .btn--glow{ color: var(--su-ink-900); }
+.btn--glow:hover,
+.btn--glow:focus-visible{
+  border-color: var(--glow-color);
+  box-shadow: 0 0 0 1px var(--glow-color), 0 0 16px 0 color-mix(in srgb, var(--glow-color) 55%, transparent);
+  outline: none;
+}
+.btn--glow.is-active,
+.btn--glow:active{
+  border-color: var(--glow-color);
+  background: color-mix(in srgb, var(--glow-color) 16%, transparent);
+  box-shadow: 0 0 0 1px var(--glow-color), 0 0 20px 2px color-mix(in srgb, var(--glow-color) 60%, transparent);
+  transform: none; /* never presses down */
+}
+
+/* size / shape modifiers — combine with any style above */
 .btn--sm{ padding: 8px 14px; font-size: 12.5px; border-radius: var(--su-r-sm); }
 .btn--lg{ padding: 15px 26px; font-size: 14.5px; border-radius: var(--su-r-lg); }
-
-/* shape modifiers */
 .btn--pill{ border-radius: var(--su-r-pill); }
-.btn--icon{
-  padding: 0;
-  width: 44px;
-  height: 44px;
-  border-radius: var(--su-r-md);
-  position: relative;
-}
+.btn--icon{ position: relative; padding: 0; width: 44px; height: 44px; border-radius: var(--su-r-md); }
 .btn--icon.btn--sm{ width: 34px; height: 34px; border-radius: var(--su-r-sm); }
-
-/* small notification dot — put inside a position:relative .btn--icon */
-.btn__dot{
+.btn__dot{ /* notification dot — place inside a relative .btn--icon */
   position: absolute;
   top: 8px; right: 9px;
   width: 7px; height: 7px;
@@ -514,7 +399,6 @@
    5. FORM CONTROLS
    ===================================================================== */
 
-/* -- text input, inset well -- */
 .input-well{
   display: flex;
   align-items: center;
@@ -526,46 +410,24 @@
   box-shadow: var(--su-inset-sm);
 }
 .input-well input{
-  border: none;
-  outline: none;
-  background: transparent;
-  font: inherit;
-  font-size: 13.5px;
-  color: var(--su-ink-900);
-  width: 100%;
+  border: none; outline: none; background: transparent;
+  font: inherit; font-size: 13.5px; color: var(--su-ink-900); width: 100%;
 }
 .input-well input::placeholder{ color: var(--su-ink-400); }
 .input-well:focus-within{ box-shadow: var(--su-inset-sm), 0 0 0 2px var(--su-accent-soft); }
 
-/* -- toggle switch --
+/* toggle switch:
    <label class="toggle">
      <input type="checkbox">
-     <span class="toggle__track"></span>
-     <span class="toggle__thumb"></span>
+     <span class="toggle__track"></span><span class="toggle__thumb"></span>
    </label> */
-.toggle{
-  --w: 46px; --h: 26px;
-  position: relative;
-  display: inline-block;
-  width: var(--w);
-  height: var(--h);
-}
+.toggle{ --w: 46px; --h: 26px; position: relative; display: inline-block; width: var(--w); height: var(--h); }
 .toggle input{ position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; z-index: 1; }
-.toggle__track{
-  position: absolute; inset: 0;
-  border-radius: var(--su-r-pill);
-  background: var(--su-panel);
-  box-shadow: var(--su-inset-sm);
-  transition: box-shadow var(--su-transition);
-}
+.toggle__track{ position: absolute; inset: 0; border-radius: var(--su-r-pill); background: var(--su-panel); box-shadow: var(--su-inset-sm); }
 .toggle__thumb{
-  position: absolute;
-  top: 3px; left: 3px;
-  width: calc(var(--h) - 6px);
-  height: calc(var(--h) - 6px);
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: var(--su-convex-sm);
+  position: absolute; top: 3px; left: 3px;
+  width: calc(var(--h) - 6px); height: calc(var(--h) - 6px);
+  border-radius: 50%; background: #fff; box-shadow: var(--su-convex-sm);
   transition: transform var(--su-transition), background var(--su-transition);
 }
 .toggle input:checked ~ .toggle__thumb{
@@ -573,87 +435,45 @@
   background: linear-gradient(145deg, var(--su-accent-soft), var(--su-accent));
 }
 
-/* -- checkbox, inset square that fills convex+color on check --
+/* checkbox:
    <label class="checkbox-soft">
      <input type="checkbox">
-     <span class="checkbox-soft__box">
-       <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 6l3 3 5-6" fill="none" stroke-width="2"/></svg>
-     </span>
+     <span class="checkbox-soft__box"><svg>...check path...</svg></span>
    </label> */
-.checkbox-soft{
-  --s: 22px;
-  position: relative;
-  display: inline-grid;
-  place-items: center;
-  width: var(--s); height: var(--s);
-}
+.checkbox-soft{ --s: 22px; position: relative; display: inline-grid; place-items: center; width: var(--s); height: var(--s); }
 .checkbox-soft input{ position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; z-index: 1; }
 .checkbox-soft__box{
-  position: absolute; inset: 0;
-  border-radius: 7px;
-  background: var(--su-panel);
-  box-shadow: var(--su-inset-sm);
-  display: grid; place-items: center;
+  position: absolute; inset: 0; border-radius: 7px; background: var(--su-panel);
+  box-shadow: var(--su-inset-sm); display: grid; place-items: center;
   transition: box-shadow var(--su-transition), background var(--su-transition);
 }
-.checkbox-soft__box svg{ opacity: 0; transition: opacity var(--su-transition); stroke: #fff; }
+.checkbox-soft__box svg{ opacity: 0; stroke: #fff; transition: opacity var(--su-transition); }
 .checkbox-soft input:checked ~ .checkbox-soft__box{
   background: linear-gradient(145deg, var(--su-accent-soft), var(--su-accent));
   box-shadow: var(--su-convex-sm);
 }
 .checkbox-soft input:checked ~ .checkbox-soft__box svg{ opacity: 1; }
 
-/* -- range slider, inset track + convex thumb -- */
 .slider-soft{
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100%;
-  height: 10px;
-  border-radius: var(--su-r-pill);
-  background: var(--su-panel);
-  box-shadow: var(--su-inset-sm);
-  outline: none;
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 10px; border-radius: var(--su-r-pill);
+  background: var(--su-panel); box-shadow: var(--su-inset-sm); outline: none;
 }
 .slider-soft::-webkit-slider-thumb{
-  -webkit-appearance: none;
-  width: 22px; height: 22px;
-  border-radius: 50%;
-  background: linear-gradient(145deg, #fff, #dfe6f3);
-  box-shadow: var(--su-convex-sm);
-  cursor: pointer;
-  border: none;
+  -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%;
+  background: linear-gradient(145deg, #fff, #dfe6f3); box-shadow: var(--su-convex-sm); cursor: pointer; border: none;
 }
 .slider-soft::-moz-range-thumb{
-  width: 22px; height: 22px;
-  border-radius: 50%;
-  background: linear-gradient(145deg, #fff, #dfe6f3);
-  box-shadow: var(--su-convex-sm);
-  cursor: pointer;
-  border: none;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: linear-gradient(145deg, #fff, #dfe6f3); box-shadow: var(--su-convex-sm); cursor: pointer; border: none;
 }
 
-/* -- segmented control / pill tabs --
-   <div class="segmented">
-     <button class="segmented__btn is-active">1W</button>
-     <button class="segmented__btn">1M</button>
-   </div> */
-.segmented{
-  display: inline-flex;
-  gap: 4px;
-  padding: 4px;
-  border-radius: var(--su-r-pill);
-  background: var(--su-panel);
-  box-shadow: var(--su-inset-sm);
-}
+/* segmented control:
+   <div class="segmented"><button class="segmented__btn is-active">1W</button>...</div> */
+.segmented{ display: inline-flex; gap: 4px; padding: 4px; border-radius: var(--su-r-pill); background: var(--su-panel); box-shadow: var(--su-inset-sm); }
 .segmented__btn{
-  border: none;
-  background: transparent;
-  padding: 7px 15px;
-  border-radius: var(--su-r-pill);
-  font-size: 12.5px;
-  font-weight: 600;
-  color: var(--su-ink-500);
-  cursor: pointer;
+  border: none; background: transparent; padding: 7px 15px; border-radius: var(--su-r-pill);
+  font-size: 12.5px; font-weight: 600; color: var(--su-ink-500); cursor: pointer;
   transition: color var(--su-transition), background var(--su-transition), box-shadow var(--su-transition);
 }
 .segmented__btn.is-active{
@@ -667,57 +487,35 @@
    6. CONTENT MODULES
    ===================================================================== */
 
-/* -- label + big figure, e.g. balance / KPI --
+/* stat block:
    <div class="stat-block">
      <p class="stat-block__label">Total balance</p>
      <p class="stat-block__figure">$128,942<small>.60</small></p>
      <span class="stat-block__delta stat-block__delta--up">+6.2%</span>
    </div> */
-.stat-block__label{
-  font-size: 12.5px;
-  font-weight: 600;
-  color: var(--su-ink-500);
-  margin: 0 0 6px;
-}
-.stat-block__figure{
-  font-family: "Fraunces", Georgia, serif;
-  font-size: clamp(28px, 3vw, 38px);
-  font-weight: 500;
-  margin: 0;
-  color: var(--su-ink-900);
-}
+.stat-block__label{ font-size: 12.5px; font-weight: 600; color: var(--su-ink-500); margin: 0 0 6px; }
+.stat-block__figure{ font-family: "Fraunces", Georgia, serif; font-size: clamp(28px, 3vw, 38px); font-weight: 500; margin: 0; color: var(--su-ink-900); }
 .stat-block__figure small{ font-size: 0.5em; color: var(--su-ink-500); font-weight: 400; }
 .stat-block__delta{ font-size: 12px; font-weight: 600; margin-left: 8px; }
 .stat-block__delta--up{ color: var(--su-success); }
 .stat-block__delta--down{ color: var(--su-danger); }
 
-/* -- badge / pill label -- */
 .badge{
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 11px;
-  border-radius: var(--su-r-pill);
-  font-size: 11.5px;
-  font-weight: 700;
-  background: rgba(255,255,255,0.5);
-  color: var(--su-ink-700);
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 11px; border-radius: var(--su-r-pill);
+  font-size: 11.5px; font-weight: 700;
+  background: rgba(255,255,255,0.5); color: var(--su-ink-700);
 }
 .badge--accent{ background: rgba(91,110,232,0.14); color: var(--su-accent); }
 .badge--success{ background: rgba(79,154,114,0.14); color: var(--su-success); }
 .badge--danger{ background: rgba(212,112,127,0.14); color: var(--su-danger); }
 .badge--amber{ background: rgba(240,185,143,0.22); color: #b9713a; }
 
-/* -- avatar chip -- */
 .avatar{
-  width: 32px; height: 32px;
-  border-radius: 50%;
+  width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
   display: grid; place-items: center;
   background: linear-gradient(145deg, var(--su-accent-soft), var(--su-accent));
-  color: #fff;
-  font-family: "Fraunces", serif;
-  font-size: 14px;
-  flex-shrink: 0;
+  color: #fff; font-family: "Fraunces", serif; font-size: 14px;
 }
 .avatar--sm{ width: 24px; height: 24px; font-size: 11px; }
 .avatar--lg{ width: 44px; height: 44px; font-size: 17px; }
@@ -725,78 +523,33 @@
 .avatar-group .avatar{ margin-left: -10px; border: 2px solid var(--su-panel); }
 .avatar-group .avatar:first-child{ margin-left: 0; }
 
-/* -- progress bar --
-   <div class="progress-bar"><span class="progress-bar__fill" style="width:68%"></span></div> */
-.progress-bar{
-  height: 7px;
-  border-radius: var(--su-r-pill);
-  background: rgba(174,187,214,0.35);
-  box-shadow: inset 0 1px 2px rgba(148,163,209,0.4);
-  overflow: hidden;
-}
-.progress-bar__fill{
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-  background: var(--su-accent);
-  transition: width 400ms ease;
-}
+/* <div class="progress-bar"><span class="progress-bar__fill" style="width:68%"></span></div> */
+.progress-bar{ height: 7px; border-radius: var(--su-r-pill); background: rgba(174,187,214,0.35); box-shadow: inset 0 1px 2px rgba(148,163,209,0.4); overflow: hidden; }
+.progress-bar__fill{ display: block; height: 100%; border-radius: inherit; background: var(--su-accent); transition: width 400ms ease; }
 
-/* -- circular % ring --
+/* circular % ring:
    <div class="ring-stat">
      <svg viewBox="0 0 64 64" width="56" height="56">
        <circle cx="32" cy="32" r="27" class="ring-stat__track"/>
        <circle cx="32" cy="32" r="27" class="ring-stat__fill"
-               style="stroke:var(--su-accent);
-                      stroke-dasharray:169.6;
+               style="stroke:var(--su-accent); stroke-dasharray:169.6;
                       stroke-dashoffset:calc(169.6 - (169.6 * PCT / 100));"/>
      </svg>
      <span>PCT%</span>
    </div>
-   circumference for r=27 is ~169.6 — recompute as 2*PI*r if you change r. */
+   circumference for r=27 is ~169.6 — recompute as 2*PI*r if r changes */
 .ring-stat{ position: relative; display: inline-grid; place-items: center; }
 .ring-stat span{ position: absolute; font-size: 11.5px; font-weight: 700; color: var(--su-ink-700); }
 .ring-stat__track{ fill: none; stroke: rgba(174,187,214,0.4); stroke-width: 6; }
-.ring-stat__fill{
-  fill: none;
-  stroke-width: 6;
-  stroke-linecap: round;
-  transform: rotate(-90deg);
-  transform-origin: 50% 50%;
-  transition: stroke-dashoffset 400ms ease;
-}
+.ring-stat__fill{ fill: none; stroke-width: 6; stroke-linecap: round; transform: rotate(-90deg); transform-origin: 50% 50%; transition: stroke-dashoffset 400ms ease; }
 
-/* -- icon chip: small rounded neomorphic icon container --
-   set --icon-chip-color inline to recolor the glyph */
-.icon-chip{
-  width: 32px; height: 32px;
-  border-radius: 10px;
-  display: grid; place-items: center;
-  background: var(--su-panel);
-  box-shadow: var(--su-convex-sm);
-  color: var(--icon-chip-color, var(--su-accent));
-  flex-shrink: 0;
-}
+/* icon chip — set --icon-chip-color inline to recolor the glyph */
+.icon-chip{ width: 32px; height: 32px; border-radius: 10px; flex-shrink: 0; display: grid; place-items: center; background: var(--su-panel); box-shadow: var(--su-convex-sm); color: var(--icon-chip-color, var(--su-accent)); }
 .icon-chip--lg{ width: 44px; height: 44px; border-radius: 13px; }
 .icon-chip--inset{ box-shadow: var(--su-inset-sm); }
 
-/* -- list row: icon + text + trailing value, for activity/transaction lists --
-   <div class="list-row">
-     <div class="icon-chip">...svg...</div>
-     <div class="list-row__body">
-       <p class="list-row__title">Whole Foods Market</p>
-       <p class="list-row__meta">Groceries · Today, 11:42</p>
-     </div>
-     <span class="list-row__value list-row__value--neg">−$84.20</span>
-   </div> */
-.list-row{
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
-  border-radius: var(--su-r-sm);
-  transition: background var(--su-transition);
-}
+/* list row — icon + text + trailing value, for activity/transaction lists */
+.list-row{ display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: var(--su-r-sm); transition: background var(--su-transition); }
 .list-row:hover{ background: rgba(255,255,255,0.4); }
 .list-row__body{ flex: 1; min-width: 0; }
 .list-row__title{ margin: 0 0 3px; font-size: 13.5px; font-weight: 600; color: var(--su-ink-900); }
@@ -805,96 +558,44 @@
 .list-row__value--pos{ color: var(--su-success); }
 .list-row__value--neg{ color: var(--su-danger); }
 
-/* -- divider -- */
-.divider{
-  height: 1px;
-  margin: 20px 0;
-  background: linear-gradient(90deg, transparent, rgba(174,187,214,0.6), transparent);
-  border: none;
-}
-.divider--vertical{
-  width: 1px; height: auto;
-  align-self: stretch;
-  margin: 0 16px;
-  background: linear-gradient(180deg, transparent, rgba(174,187,214,0.6), transparent);
-}
+.divider{ height: 1px; margin: 20px 0; border: none; background: linear-gradient(90deg, transparent, rgba(174,187,214,0.6), transparent); }
+.divider--vertical{ width: 1px; height: auto; align-self: stretch; margin: 0 16px; background: linear-gradient(180deg, transparent, rgba(174,187,214,0.6), transparent); }
 
-/* -- floating glass tooltip — wrap trigger in position:relative, add
-      .tooltip-glass as an absolutely-positioned sibling, toggle visibility
-      with your own JS/CSS (e.g. opacity + [hidden]) -- */
+/* floating glass tooltip — wrap trigger in position:relative, add as an
+   absolutely-positioned sibling, toggle visibility with your own JS/CSS */
 .tooltip-glass{
-  position: absolute;
-  padding: 7px 12px;
-  border-radius: var(--su-r-sm);
-  background: rgba(43, 51, 80, 0.82);
-  color: #fff;
-  font-size: 11.5px;
-  font-weight: 600;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 8px 20px rgba(43,51,80,0.25);
-  white-space: nowrap;
-  pointer-events: none;
+  position: absolute; padding: 7px 12px; border-radius: var(--su-r-sm);
+  background: rgba(43, 51, 80, 0.82); color: #fff; font-size: 11.5px; font-weight: 600;
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 8px 20px rgba(43,51,80,0.25); white-space: nowrap; pointer-events: none;
 }
 
-/* -- glass modal: scrim + centered panel --
-   <div class="modal-glass"><div class="modal-glass__panel">...</div></div> */
-.modal-glass{
-  position: fixed;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  background: rgba(203, 214, 235, 0.55);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  z-index: 50;
-}
+/* glass modal: <div class="modal-glass"><div class="modal-glass__panel">...</div></div> */
+.modal-glass{ position: fixed; inset: 0; display: grid; place-items: center; background: rgba(203, 214, 235, 0.55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); z-index: 50; }
 .modal-glass__panel{
-  width: min(440px, 90vw);
-  padding: 30px;
-  border-radius: var(--su-r-xl);
-  background: var(--su-glass-strong);
-  border: 1px solid var(--su-glass-border);
-  backdrop-filter: blur(var(--su-blur-strong)) saturate(170%);
-  -webkit-backdrop-filter: blur(var(--su-blur-strong)) saturate(170%);
-  box-shadow:
-    0 1px 0 rgba(255,255,255,0.7) inset,
-    0 24px 60px rgba(43, 51, 80, 0.28);
+  width: min(440px, 90vw); padding: 30px; border-radius: var(--su-r-xl);
+  background: var(--su-glass-strong); border: 1px solid var(--su-glass-border);
+  backdrop-filter: blur(var(--su-blur-strong)) saturate(170%); -webkit-backdrop-filter: blur(var(--su-blur-strong)) saturate(170%);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.7) inset, 0 24px 60px rgba(43, 51, 80, 0.28);
 }
 
-/* -- card with hover lift (optional motion for clickable panels) --
-   add alongside .panel: class="panel card-tilt" */
-.card-tilt{
-  transition: transform var(--su-transition), box-shadow var(--su-transition);
-  cursor: pointer;
-}
-.card-tilt:hover{
-  transform: translateY(-3px);
-  box-shadow: var(--su-convex-lg), 0 20px 30px rgba(148,163,209,0.25);
-}
+/* clickable panel with hover lift — add alongside .panel: class="panel card-tilt" */
+.card-tilt{ transition: transform var(--su-transition), box-shadow var(--su-transition); cursor: pointer; }
+.card-tilt:hover{ transform: translateY(-3px); box-shadow: var(--su-convex-lg), 0 20px 30px rgba(148,163,209,0.25); }
 
 
 /* =====================================================================
    7. UTILITIES
    ===================================================================== */
 
-/* styled scrollbar — add alongside .well/.panel plus overflow-y:auto */
 .scrollbar-soft{ overflow-y: auto; }
 .scrollbar-soft::-webkit-scrollbar{ width: 6px; }
 .scrollbar-soft::-webkit-scrollbar-track{ background: transparent; }
-.scrollbar-soft::-webkit-scrollbar-thumb{
-  background: rgba(148,163,209,0.5);
-  border-radius: var(--su-r-pill);
-}
+.scrollbar-soft::-webkit-scrollbar-thumb{ background: rgba(148,163,209,0.5); border-radius: var(--su-r-pill); }
 
-/* quick color-coded left accent stripe, e.g. for alert wells.
-   set --stripe-color inline to recolor */
 .accent-stripe{ border-left: 3px solid var(--stripe-color, var(--su-accent)); }
 
-/* soft ambient glow blob — decorative, mimics the light flares in dark
-   neomorphic references. Position absolutely inside a .panel/.well with
-   position:relative and overflow:hidden on the parent. */
-.glow-blob{
+.glow-blob{ /* decorative ambient light flare — position absolutely inside a relative, overflow:hidden parent */
   position: absolute;
   width: 160px; height: 160px;
   border-radius: 50%;
@@ -902,6 +603,7 @@
   filter: blur(10px);
   pointer-events: none;
 }
+
 .text-muted{ color: var(--su-ink-500); }
 .text-faint{ color: var(--su-ink-400); }
 .text-accent{ color: var(--su-accent); }
