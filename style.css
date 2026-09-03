@@ -102,7 +102,18 @@
   --su-glass-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 10px 24px rgba(0, 0, 0, 0.45);
 }
 
+.games {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:16px;
+}
 
+.games img {
+    width:100%;
+    aspect-ratio:16/9;
+    object-fit:cover;
+    border-radius:inherit;
+}
 /* =====================================================================
    2. BASE SURFACE
    ===================================================================== */
