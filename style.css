@@ -121,6 +121,43 @@
   --su-blur-strong: 26px;
 
   --su-transition: 180ms ease;
+
+  /* ===================================================================
+     DARK NEOMORPHIC THEME — set data-theme="dark" on <html> or <body>
+     to switch every surface/button/control to the dark, glowing style
+     seen in premium smart-home / fintech dashboards.
+     =================================================================== */
+}
+
+[data-theme="dark"]{
+  --su-bg-a: #1c2030;
+  --su-bg-b: #12141e;
+
+  --su-ink-900: #f3f5fa;
+  --su-ink-700: #c7cce0;
+  --su-ink-500: #9096b0;
+  --su-ink-400: #6b7290;
+
+  --su-accent: #7c8cf5;
+  --su-accent-soft: #a5b0fb;
+  --su-mint: #7fd0c4;
+  --su-amber: #f0b98f;
+  --su-rose: #e598b0;
+  --su-success: #6bd19a;
+  --su-danger: #f28d97;
+
+  --su-panel: #262b3d;
+  --su-glass: rgba(38, 43, 61, 0.5);
+  --su-glass-strong: rgba(38, 43, 61, 0.7);
+  --su-glass-border: rgba(255, 255, 255, 0.08);
+
+  /* dark neomorphism: "light" becomes a soft glow, "dark" becomes deep shadow */
+  --su-sh-light: rgba(255, 255, 255, 0.06);
+  --su-sh-dark: rgba(0, 0, 0, 0.55);
+
+  --su-glass-shadow:
+    0 1px 0 rgba(255,255,255,0.06) inset,
+    0 10px 24px rgba(0, 0, 0, 0.45);
 }
 
 
@@ -684,7 +721,17 @@
    set --stripe-color inline to recolor */
 .accent-stripe{ border-left: 3px solid var(--stripe-color, var(--su-accent)); }
 
-/* text helpers */
+/* soft ambient glow blob — decorative, mimics the light flares in dark
+   neomorphic references. Position absolutely inside a .panel/.well with
+   position:relative and overflow:hidden on the parent. */
+.glow-blob{
+  position: absolute;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(124,140,245,0.35), transparent 70%);
+  filter: blur(10px);
+  pointer-events: none;
+}
 .text-muted{ color: var(--su-ink-500); }
 .text-faint{ color: var(--su-ink-400); }
 .text-accent{ color: var(--su-accent); }
