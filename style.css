@@ -184,6 +184,44 @@
     radial-gradient(900px 500px at 110% 10%, rgba(255,255,255,0.35), transparent 55%);
 }
 
+/* -- vivid wallpaper for liquid glass demos —
+   Tahoe-style glass reads best over saturated color, not flat pastel.
+   Apply instead of / on top of .surface: class="surface surface-vivid" -- */
+.surface-vivid{
+  background:
+    radial-gradient(1000px 700px at 15% 10%, #ff9a8b 0%, transparent 55%),
+    radial-gradient(900px 700px at 85% 15%, #7c8cf5 0%, transparent 55%),
+    radial-gradient(1000px 800px at 50% 100%, #59c9ff 0%, transparent 60%),
+    linear-gradient(160deg, #2b2f7e 0%, #16182c 100%);
+  background-attachment: fixed;
+}
+
+/* -- dark world-map surface --
+   Low-detail, dark-themed backdrop meant to sit behind a real map image
+   (satellite/vector tiles from your map provider) or the placeholder
+   texture below if you don't have one wired up yet.
+
+   Usage once you have a map image (e.g. a static-map URL centered on
+   the user's coords, defaulting to a whole-earth view when no location
+   is available — that centering logic is JS, not CSS):
+
+     <div class="surface surface-map"
+          style="background-image:url('your-dark-map.png');"></div>
+
+   Until then, .surface-map alone renders a dark navy field with a very
+   faint dot-grid so panels have something moody to float over. */
+.surface-map{
+  background-color: #0d0f1a;
+  background-image:
+    radial-gradient(circle at 25% 30%, rgba(124,140,245,0.10), transparent 45%),
+    radial-gradient(circle at 75% 65%, rgba(89,201,255,0.08), transparent 45%),
+    radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: auto, auto, 22px 22px;
+  background-position: center;
+  background-repeat: no-repeat, no-repeat, repeat;
+  background-attachment: fixed;
+}
+
 
 /* =====================================================================
    3. SURFACES — panel (convex) / well (concave) / glass (frosted)
@@ -234,6 +272,136 @@
   -webkit-backdrop-filter: blur(var(--su-blur-strong)) saturate(170%);
 }
 
+/* -- liquid glass (macOS Tahoe style) --
+   heavier blur/saturation, brighter rim light, a soft specular sweep
+   across the top edge, and larger, softer corner radii. Stack on top
+   of .panel or .glass: class="panel panel--liquid" -- */
+.panel--liquid,
+.glass--liquid{
+  background: linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.04));
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: var(--su-r-xl);
+  backdrop-filter: blur(34px) saturate(190%);
+  -webkit-backdrop-filter: blur(34px) saturate(190%);
+  box-shadow:
+    0 1px 1px rgba(255,255,255,0.5) inset,
+    0 -1px 1px rgba(255,255,255,0.15) inset,
+    0 18px 40px rgba(0,0,0,0.18);
+  overflow: hidden;
+  position: relative;
+}
+[data-theme="dark"] .panel--liquid,
+[data-theme="dark"] .glass--liquid{
+  background: linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow:
+    0 1px 1px rgba(255,255,255,0.18) inset,
+    0 -1px 1px rgba(255,255,255,0.05) inset,
+    0 18px 40px rgba(0,0,0,0.5);
+}
+/* specular sweep — a bright diagonal highlight like light hitting curved glass */
+.panel--liquid::after,
+.glass--liquid::after{
+  content: "";
+  position: absolute;
+  top: -60%; left: -20%;
+  width: 70%; height: 220%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.35), rgba(255,255,255,0) 55%);
+  transform: rotate(-12deg);
+  pointer-events: none;
+}
+
+/* -- flat liquid glass (less 3D) --
+   same frosted-glass material as .panel--liquid but with the specular
+   sweep and deep drop-shadow removed, so it reads as a flat pane of
+   glass rather than a raised 3D card. Use instead of .panel--liquid
+   when you want minimal depth: class="panel panel--liquid-flat" -- */
+.panel--liquid-flat,
+.glass--liquid-flat{
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: var(--su-r-xl);
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.12) inset;
+}
+[data-theme="dark"] .panel--liquid-flat,
+[data-theme="dark"] .glass--liquid-flat{
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset;
+}
+.btn--liquid{
+  color: var(--su-ink-700);
+  background: linear-gradient(180deg, rgba(255,255,255,0.35), rgba(255,255,255,0.1));
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: var(--su-r-pill);
+  backdrop-filter: blur(22px) saturate(190%);
+  -webkit-backdrop-filter: blur(22px) saturate(190%);
+  box-shadow:
+    0 1px 1px rgba(255,255,255,0.6) inset,
+    0 8px 20px rgba(0,0,0,0.12);
+  transition: transform var(--su-transition), box-shadow var(--su-transition), background var(--su-transition);
+}
+.btn--liquid:hover{
+  transform: translateY(-2px);
+  background: linear-gradient(180deg, rgba(255,255,255,0.45), rgba(255,255,255,0.14));
+}
+.btn--liquid:active{
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15) inset;
+}
+[data-theme="dark"] .btn--liquid{
+  color: var(--su-ink-900);
+  background: linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.04));
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow:
+    0 1px 1px rgba(255,255,255,0.2) inset,
+    0 8px 20px rgba(0,0,0,0.4);
+}
+.btn--liquid.btn--primary{
+  color: #fff;
+  background: linear-gradient(180deg, rgba(124,140,245,0.9), rgba(91,110,232,0.75));
+  border: 1px solid rgba(255,255,255,0.5);
+  box-shadow:
+    0 1px 1px rgba(255,255,255,0.5) inset,
+    0 10px 24px rgba(91,110,232,0.4);
+}
+
+/* -- glow-border button (no vertical press movement) --
+   flat glass button that lights up its border/ring instead of moving
+   or darkening on hover/press. Color is customizable per-button via
+   the --glow-color custom property.
+   <button class="btn btn--glow" style="--glow-color:#7c8cf5;">Save</button> -- */
+.btn--glow{
+  --glow-color: var(--su-accent);
+  color: var(--su-ink-700);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: var(--su-r-pill);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  box-shadow: 0 0 0 0 transparent;
+  transition: box-shadow var(--su-transition), border-color var(--su-transition), background var(--su-transition);
+}
+[data-theme="dark"] .btn--glow{ color: var(--su-ink-900); }
+.btn--glow:hover{
+  border-color: var(--glow-color);
+  box-shadow: 0 0 0 1px var(--glow-color), 0 0 16px 0 color-mix(in srgb, var(--glow-color) 55%, transparent);
+}
+.btn--glow:focus-visible{
+  border-color: var(--glow-color);
+  box-shadow: 0 0 0 1px var(--glow-color), 0 0 16px 0 color-mix(in srgb, var(--glow-color) 55%, transparent);
+  outline: none;
+}
+.btn--glow.is-active,
+.btn--glow:active{
+  border-color: var(--glow-color);
+  background: color-mix(in srgb, var(--glow-color) 16%, transparent);
+  box-shadow: 0 0 0 1px var(--glow-color), 0 0 20px 2px color-mix(in srgb, var(--glow-color) 60%, transparent);
+  transform: none; /* explicitly no press movement */
+}
+
 /* flat, shadowless — use for content nested *inside* a panel/well so
    shadows don't stack */
 .flat{
@@ -264,6 +432,8 @@
   transition: transform var(--su-transition), box-shadow var(--su-transition), color var(--su-transition);
 }
 .btn:active{ transform: translateY(1px); }
+.btn--glow:active,
+.btn--no-press:active{ transform: none; }
 .btn:focus-visible{ outline: 2px solid var(--su-accent); outline-offset: 2px; }
 
 /* -- raised / convex (default look for most buttons) -- */
