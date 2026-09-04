@@ -1,6 +1,6 @@
 [
-  { "title": "Starfall Chronicles", "tag": "RPG", "hours": 42, "icon": "🌌", "c1": "#3a5a8a", "c2": "#1b2838" },
-  { "title": "Echo Loop", "tag": "Puzzle", "hours": 11, "icon": "🔁", "c1": "#4a3a8a", "c2": "#1b2838" },
-  { "title": "Voidbreak", "tag": "Shooter", "hours": 87, "icon": "🛰️", "c1": "#8a3a3a", "c2": "#1b2838" },
-  { "title": "Quiet Harbor", "tag": "Sim", "hours": 5, "icon": "⚓", "c1": "#2f7a5f", "c2": "#1b2838" }
+  { "title": "game1", "tag": "RPG", "hours": 42, "icon": "🌌", "c1": "#3a5a8a", "c2": "#1b2838" },
+  { "title": "game2", "tag": "Puzzle", "hours": 11, "icon": "🔁", "c1": "#4a3a8a", "c2": "#1b2838" },
+  { "title": "game3": "tag": "Shooter", "hours": 87, "icon": "🛰️", "c1": "#8a3a3a", "c2": "#1b2838" },
+  { "title": "game4", "tag": "Sim", "hours": 5, "icon": "⚓", "c1": "#2f7a5f", "c2": "#1b2838" }
 ]
