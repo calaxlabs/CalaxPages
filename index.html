@@ -8,60 +8,69 @@
 </head>
 <body>
 
-  <!-- Floating pill navbar -->
+  <!-- Floating pill menubar (individual pill buttons) -->
   <nav class="navbar">
-    <div class="nav-brand"> test</div>
-    <ul class="nav-links">
-      <li class="active" data-target="games">View Games</li>
-      <li data-target="favorited">Favorited</li>
-      <li data-target="profile">Profile</li>
-      <li data-target="about">About</li>
-    </ul>
+    <button class="pill active" data-target="games">View Games</button>
+    <button class="pill" data-target="favorited">Favorited</button>
+    <button class="pill" data-target="profile">Profile</button>
+    <button class="pill" data-target="about">About</button>
+    <span class="pill stat">$1110.39</span>
   </nav>
 
   <!-- Infinite dotted-grid canvas -->
   <div class="viewport" id="viewport">
     <div class="canvas" id="canvas">
 
-      <section class="panel" id="games" style="--x: 0; --y: 0;">
-        <h2>View Games</h2>
-        <p>Your library, freshly indexed. Drag the canvas around — it's endless, but gently held in place.</p>
-        <div class="grid-cards">
-          <div class="card"><span class="tag">RPG</span><h3>Starfall Chronicles</h3><p>42h played</p></div>
-          <div class="card"><span class="tag">Puzzle</span><h3>Echo Loop</h3><p>11h played</p></div>
-          <div class="card"><span class="tag">Shooter</span><h3>Voidbreak</h3><p>87h played</p></div>
-          <div class="card"><span class="tag">Sim</span><h3>Quiet Harbor</h3><p>5h played</p></div>
-        </div>
+      <!-- Wide landscape page -->
+      <section class="page wide" id="games" style="--x: 0; --y: 0;">
+        <div class="page-tab">GAME LIBRARY</div>
+        <div class="ribbon">42 TITLES</div>
+        <p class="eyebrow">BY ORDER OF THE ARCHIVE</p>
+        <h1>VIEW GAMES</h1>
+        <p class="subtitle">Colin's Collection</p>
+        <hr>
+        <p class="lede">Browse the library below.</p>
+        <p class="section-label">TITLES</p>
+        <div class="row"><span class="qty">×42h</span><span>Starfall Chronicles</span></div>
+        <div class="row"><span class="qty">×11h</span><span>Echo Loop</span></div>
+        <div class="row"><span class="qty">×87h</span><span>Voidbreak</span></div>
+        <div class="row"><span class="qty">×5h</span><span>Quiet Harbor</span></div>
       </section>
 
-      <section class="panel" id="favorited" style="--x: 620; --y: -180;">
+      <!-- Small square page -->
+      <section class="page square" id="favorited" style="--x: 760; --y: -120;">
+        <p class="eyebrow">MARKET WATCH</p>
         <h2>Favorited</h2>
-        <p>Games you've starred for quick access.</p>
-        <div class="grid-cards">
-          <div class="card"><span class="tag">★</span><h3>Starfall Chronicles</h3><p>Added 3 days ago</p></div>
-          <div class="card"><span class="tag">★</span><h3>Voidbreak</h3><p>Added 2 weeks ago</p></div>
-        </div>
+        <hr>
+        <div class="row"><span class="qty">★</span><span>Starfall Chronicles</span></div>
+        <div class="row"><span class="qty">★</span><span>Voidbreak</span></div>
+        <div class="row"><span class="qty">★</span><span>Echo Loop</span></div>
       </section>
 
-      <section class="panel" id="profile" style="--x: -560; --y: 260;">
+      <!-- Tall receipt-style page -->
+      <section class="page tall" id="profile" style="--x: -640; --y: 260;">
+        <p class="eyebrow">IDENTIFICATION</p>
         <h2>Profile</h2>
-        <p>Signed in as <strong>Wanderer_07</strong></p>
-        <ul class="stat-list">
-          <li><span>Level</span><strong>34</strong></li>
-          <li><span>Games owned</span><strong>128</strong></li>
-          <li><span>Achievements</span><strong>612</strong></li>
-        </ul>
+        <hr>
+        <p class="lede">Wanderer_07</p>
+        <div class="row"><span>Level</span><span class="qty">34</span></div>
+        <div class="row"><span>Games owned</span><span class="qty">128</span></div>
+        <div class="row"><span>Achievements</span><span class="qty">612</span></div>
+        <div class="row"><span>Status</span><span class="qty red">ACTIVE</span></div>
       </section>
 
-      <section class="panel" id="about" style="--x: 120; --y: 480;">
-        <h2>About</h2>
-        <p>Nebula is a minimal, spatial way to browse your game library. Pan around the canvas to explore — the camera softly resists once you near the edge, so you never really get lost.</p>
+      <!-- Wide banner page -->
+      <section class="page banner" id="about" style="--x: 60; --y: 560;">
+        <p class="eyebrow">NOTICE</p>
+        <h2>About This Place</h2>
+        <hr>
+        <p class="lede">Nebula is a minimal, spatial way to browse your game library. Pan around the endless canvas — the camera resists softly near the edges, so you never really get lost.</p>
       </section>
 
     </div>
   </div>
 
-  <div class="hint">drag to pan • scroll to zoom</div>
+  <div class="hint">DRAG TO PAN · SCROLL TO ZOOM</div>
 
   <script src="script.js"></script>
 </body>
