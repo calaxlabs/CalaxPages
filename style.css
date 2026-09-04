@@ -17,14 +17,15 @@
 
 html, body{
   margin: 0;
-  height: 100%;
-  background: var(--bg);
+  min-height: 100%;
+  background-color: var(--bg);
+  background-image: radial-gradient(var(--dot) 1.4px, transparent 1.4px);
+  background-size: 26px 26px;
   color: var(--text);
   font-family: var(--mono);
-  overflow: hidden;
 }
 
-/* ---------- Floating pill menubar ---------- */
+/* ---------- Persistent floating pill navbar ---------- */
 .navbar{
   position: fixed;
   top: 22px;
@@ -54,8 +55,10 @@ html, body{
   border-radius: 999px;
   padding: 8px 16px;
   cursor: pointer;
+  text-decoration: none;
   transition: all 0.2s ease;
   white-space: nowrap;
+  display: inline-block;
 }
 
 .pill:hover{
@@ -77,35 +80,19 @@ html, body{
   padding-right: 18px;
 }
 
-/* ---------- Infinite dotted canvas ---------- */
-.viewport{
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  cursor: grab;
-  background-color: var(--bg);
-  background-image: radial-gradient(var(--dot) 1.4px, transparent 1.4px);
-  background-size: 26px 26px;
-  background-position: var(--bg-x, 0px) var(--bg-y, 0px);
+/* ---------- Page content wrapper ---------- */
+.content{
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 130px 24px 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
 }
 
-.viewport.dragging{ cursor: grabbing; }
-
-.canvas{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  will-change: transform;
-  transform: translate(-50%, -50%);
-}
-
-/* ---------- Pages (custom sizes, document-style) ---------- */
-.page{
-  position: absolute;
-  left: calc(var(--x) * 1px);
-  top: calc(var(--y) * 1px);
+/* ---------- Document-style panel ---------- */
+.doc{
+  position: relative;
   background: var(--page-bg);
   border: 1px solid var(--border);
   border-radius: 4px;
@@ -113,10 +100,8 @@ html, body{
   box-shadow: 0 25px 60px rgba(0,0,0,0.6);
 }
 
-.page.wide{ width: 620px; }
-.page.square{ width: 300px; }
-.page.tall{ width: 320px; }
-.page.banner{ width: 520px; }
+.doc.wide{ max-width: 100%; }
+.doc.narrow{ max-width: 480px; }
 
 .eyebrow{
   margin: 0 0 8px;
@@ -126,7 +111,7 @@ html, body{
   color: var(--muted);
 }
 
-.page h1{
+.doc h1{
   margin: 0 0 4px;
   font-size: 34px;
   letter-spacing: 0.06em;
@@ -134,7 +119,7 @@ html, body{
   color: var(--text);
 }
 
-.page h2{
+.doc h2{
   margin: 0 0 4px;
   font-size: 18px;
   letter-spacing: 0.04em;
@@ -149,7 +134,7 @@ html, body{
   color: var(--accent);
 }
 
-.page hr{
+.doc hr{
   border: none;
   border-top: 1px solid var(--border-soft);
   margin: 16px 0;
@@ -186,7 +171,7 @@ html, body{
   min-width: 46px;
 }
 
-.qty.red{ color: var(--accent-red); }
+.qty.green{ color: #7cbf6f; }
 
 .page-tab{
   position: absolute;
@@ -215,15 +200,36 @@ html, body{
   box-shadow: 0 6px 14px rgba(0,0,0,0.4);
 }
 
-/* ---------- Hint ---------- */
-.hint{
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 10px;
-  letter-spacing: 0.15em;
+.grid-cards{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.card{
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  padding: 14px;
+}
+
+.card h3{
+  margin: 8px 0 2px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.card p{
+  margin: 0;
+  font-size: 11px;
   color: var(--muted);
-  z-index: 100;
-  pointer-events: none;
+}
+
+.tag{
+  display: inline-block;
+  font-size: 10px;
+  color: var(--accent);
+  background: rgba(217,123,63,0.1);
+  padding: 2px 8px;
+  border-radius: 999px;
 }
