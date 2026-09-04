@@ -3,37 +3,39 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>View Games</title>
+<title>Nebula — View Games</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <nav class="navbar">
-    <a class="pill active" href="index.html">View Games</a>
-    <a class="pill" href="favorited.html">Favorited</a>
-    <a class="pill" href="profile.html">Profile</a>
-    <a class="pill" href="about.html">About</a>
-    <span class="pill stat">$1110.39</span>
+    <div class="brand"><span class="dot"></span>Nebula</div>
+    <div class="nav-links">
+      <a class="active" href="index.html">View Games</a>
+      <a href="favorited.html">Favorited</a>
+      <a href="profile.html">Profile</a>
+      <a href="about.html">About</a>
+    </div>
+    <div class="nav-spacer"></div>
+    <div class="nav-balance">$1,110.39</div>
   </nav>
 
   <main class="content">
-    <section class="doc wide">
-      <div class="page-tab">GAME LIBRARY</div>
-      <div class="ribbon">42 TITLES</div>
-      <p class="eyebrow">BY ORDER OF THE ARCHIVE</p>
-      <h1>VIEW GAMES</h1>
-      <p class="subtitle">Colin's Collection</p>
-      <hr>
-      <p class="lede">Browse the library below.</p>
-      <p class="section-label">TITLES</p>
-      <div class="grid-cards">
-        <div class="card"><span class="tag">RPG</span><h3>Starfall Chronicles</h3><p>42h played</p></div>
-        <div class="card"><span class="tag">Puzzle</span><h3>Echo Loop</h3><p>11h played</p></div>
-        <div class="card"><span class="tag">Shooter</span><h3>Voidbreak</h3><p>87h played</p></div>
-        <div class="card"><span class="tag">Sim</span><h3>Quiet Harbor</h3><p>5h played</p></div>
-      </div>
-    </section>
+    <div class="page-header">
+      <h1>Your Library</h1>
+      <p id="count-text">Loading games…</p>
+    </div>
+    <div class="game-grid" id="grid"></div>
   </main>
 
+  <script src="script.js"></script>
+  <script>
+    (async () => {
+      const grid = document.getElementById('grid');
+      await renderGameGrid(grid);
+      const games = await loadGames();
+      document.getElementById('count-text').textContent = `${games.length} titles`;
+    })();
+  </script>
 </body>
 </html>
