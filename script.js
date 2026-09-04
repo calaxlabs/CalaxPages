@@ -2,9 +2,9 @@ const viewport = document.getElementById('viewport');
 const canvas = document.getElementById('canvas');
 
 // Camera state
-let camX = 0, camY = 0;   // canvas translation
+let camX = 0, camY = 0;
 let scale = 1;
-const BOUND = 900;        // soft bound radius for camera offset
+const BOUND = 900;
 const MIN_SCALE = 0.5, MAX_SCALE = 1.8;
 
 let isDragging = false;
@@ -12,7 +12,6 @@ let startX = 0, startY = 0;
 let camStartX = 0, camStartY = 0;
 
 function softClamp(value, limit){
-  // smoothly resists beyond `limit` without a hard wall
   if (Math.abs(value) <= limit) return value;
   const over = Math.abs(value) - limit;
   const eased = limit + over / (1 + over / limit) * 0.6;
@@ -26,11 +25,8 @@ function applyTransform(){
 }
 
 function settle(){
-  // ease back if outside soft bounds (called after release)
-  const clampedX = softClamp(camX, BOUND);
-  const clampedY = softClamp(camY, BOUND);
-  camX = clampedX;
-  camY = clampedY;
+  camX = softClamp(camX, BOUND);
+  camY = softClamp(camY, BOUND);
   applyTransform();
 }
 
@@ -47,12 +43,8 @@ window.addEventListener('mousemove', (e) => {
   if (!isDragging) return;
   const dx = e.clientX - startX;
   const dy = e.clientY - startY;
-  let nx = camStartX + dx;
-  let ny = camStartY + dy;
-  nx = softClamp(nx, BOUND);
-  ny = softClamp(ny, BOUND);
-  camX = nx;
-  camY = ny;
+  camX = softClamp(camStartX + dx, BOUND);
+  camY = softClamp(camStartY + dy, BOUND);
   applyTransform();
 });
 
@@ -63,7 +55,6 @@ window.addEventListener('mouseup', () => {
   settle();
 });
 
-// touch support
 viewport.addEventListener('touchstart', (e) => {
   const t = e.touches[0];
   isDragging = true;
@@ -88,7 +79,6 @@ viewport.addEventListener('touchend', () => {
   settle();
 });
 
-// zoom with wheel
 viewport.addEventListener('wheel', (e) => {
   e.preventDefault();
   const delta = -e.deltaY * 0.0012;
@@ -96,10 +86,10 @@ viewport.addEventListener('wheel', (e) => {
   applyTransform();
 }, { passive: false });
 
-// navbar interactions: set active + smooth pan to panel
-document.querySelectorAll('.nav-links li').forEach(item => {
+// pill nav interactions
+document.querySelectorAll('.pill[data-target]').forEach(item => {
   item.addEventListener('click', () => {
-    document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
+    document.querySelectorAll('.pill[data-target]').forEach(p => p.classList.remove('active'));
     item.classList.add('active');
 
     const target = document.getElementById(item.dataset.target);
@@ -107,7 +97,6 @@ document.querySelectorAll('.nav-links li').forEach(item => {
     const tx = parseFloat(getComputedStyle(target).getPropertyValue('--x')) || 0;
     const ty = parseFloat(getComputedStyle(target).getPropertyValue('--y')) || 0;
 
-    // animate camera to center that panel
     const destX = softClamp(-tx, BOUND);
     const destY = softClamp(-ty, BOUND);
     animateCamera(destX, destY);
