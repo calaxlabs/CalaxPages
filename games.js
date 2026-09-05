@@ -1,10 +1,12 @@
+const GITHUB_BASE = 'https://raw.githubusercontent.com/calaxlabs/CalaxPages/main/data/games';
+
 async function loadGames(){
-  const manifestRes = await fetch('data/games/index.json');
+  const manifestRes = await fetch(`${GITHUB_BASE}/index.json`);
   const filenames = await manifestRes.json();
 
   const games = await Promise.all(
     filenames.map(async (filename) => {
-      const res = await fetch(`data/games/${filename}`);
+      const res = await fetch(`${GITHUB_BASE}/${filename}`);
       return res.json();
     })
   );
