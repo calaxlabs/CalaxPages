@@ -1,0 +1,10 @@
+{
+  "title": "Game 1",
+  "description": "A short one-line description of the game.",
+  "status": "released",
+  "releaseDate": "2026-01-15",
+  "action": {
+    "type": "download",
+    "url": "https://example.com/downloads/game1.zip"
+  }
+}
