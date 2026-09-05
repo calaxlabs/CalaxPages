@@ -1,1 +1,32 @@
-
+[
+  {
+    "title": "Game 1",
+    "description": "A short one-line description of the game.",
+    "status": "released",
+    "releaseDate": "2026-01-15",
+    "action": {
+      "type": "download",
+      "url": "https://example.com/downloads/game1.zip"
+    }
+  },
+  {
+    "title": "Game 2",
+    "description": "Currently in active development.",
+    "status": "in-development",
+    "predictedReleaseDate": "2026-11-01",
+    "action": {
+      "type": "progress",
+      "percent": 42
+    }
+  },
+  {
+    "title": "Game 3",
+    "description": "Available now, fully released.",
+    "status": "released",
+    "releaseDate": "2025-08-03",
+    "action": {
+      "type": "download",
+      "url": "https://example.com/downloads/game3.zip"
+    }
+  }
+]
