@@ -4,14 +4,21 @@ async function loadGames(){
   const manifestRes = await fetch(`${GITHUB_BASE}/index.json`);
   const filenames = await manifestRes.json();
 
-  const games = await Promise.all(
+  const results = await Promise.allSettled(
     filenames.map(async (filename) => {
       const res = await fetch(`${GITHUB_BASE}/${filename}`);
+      if (!res.ok) throw new Error(`${filename} → ${res.status}`);
       return res.json();
     })
   );
 
-  return games;
+  results
+    .filter(r => r.status === 'rejected')
+    .forEach(r => console.warn('Skipped a game file:', r.reason));
+
+  return results
+    .filter(r => r.status === 'fulfilled')
+    .map(r => r.value);
 }
 
 function formatDate(dateStr){
