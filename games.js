@@ -72,67 +72,170 @@ function formatDate(dateStr){
   return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
 }
 
-function buildActionEl(action){
-  if (!action) return document.createTextNode('');
+function buildActionButton(action){
+  if (!action) return null;
+
+  if (action.type === 'play'){
+    const a = document.createElement('a');
+    a.href = action.url || '#';
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.className = 'btn btn-play';
+    a.textContent = 'Play Now';
+    return a;
+  }
 
   if (action.type === 'download'){
     const a = document.createElement('a');
     a.href = action.url || '#';
-    a.className = 'amount positive';
+    a.className = 'btn btn-download';
     a.textContent = 'Download';
     return a;
   }
 
   if (action.type === 'progress'){
-    const span = document.createElement('span');
-    span.className = 'amount';
-    span.textContent = `${action.percent ?? 0}% complete`;
-    return span;
+    const wrap = document.createElement('div');
+    wrap.className = 'progress-wrap';
+    const bar = document.createElement('div');
+    bar.className = 'progress-bar';
+    const fill = document.createElement('div');
+    fill.className = 'progress-fill';
+    fill.style.width = `${action.percent ?? 0}%`;
+    bar.appendChild(fill);
+    const label = document.createElement('span');
+    label.className = 'progress-label';
+    label.textContent = `${action.percent ?? 0}% complete`;
+    wrap.appendChild(bar);
+    wrap.appendChild(label);
+    return wrap;
   }
 
-  return document.createTextNode('');
+  return null;
 }
 
-function buildRow(game){
-  const row = document.createElement('div');
-  row.className = 'row';
+function dateLabel(game){
+  return game.status === 'released'
+    ? `Released: ${formatDate(game.releaseDate)}`
+    : `Expected: ${formatDate(game.predictedReleaseDate)}`;
+}
 
-  const info = document.createElement('div');
-  info.className = 'row-info';
+function buildGameCard(game){
+  const card = document.createElement('div');
+  card.className = 'game-card';
 
-  const title = document.createElement('span');
-  title.className = 'row-title';
+  const cover = document.createElement('div');
+  cover.className = 'game-card-cover';
+  if (game.cover){
+    cover.style.backgroundImage = `url('${game.cover}')`;
+  }
+  card.appendChild(cover);
+
+  const body = document.createElement('div');
+  body.className = 'game-card-body';
+
+  const title = document.createElement('h3');
   title.textContent = game.title;
-  info.appendChild(title);
+  body.appendChild(title);
 
   if (game.description){
-    const desc = document.createElement('span');
-    desc.className = 'row-desc muted';
+    const desc = document.createElement('p');
+    desc.className = 'muted';
     desc.textContent = game.description;
-    info.appendChild(desc);
+    body.appendChild(desc);
   }
 
-  const dateSpan = document.createElement('span');
-  dateSpan.className = 'muted';
-  if (game.status === 'released'){
-    dateSpan.textContent = `Released: ${formatDate(game.releaseDate)}`;
-  } else {
-    dateSpan.textContent = `Expected: ${formatDate(game.predictedReleaseDate)}`;
+  const date = document.createElement('span');
+  date.className = 'muted game-card-date';
+  date.textContent = dateLabel(game);
+  body.appendChild(date);
+
+  const actions = document.createElement('div');
+  actions.className = 'game-card-actions';
+
+  const actionBtn = buildActionButton(game.action);
+  if (actionBtn) actions.appendChild(actionBtn);
+
+  const viewBtn = document.createElement('button');
+  viewBtn.className = 'btn btn-view';
+  viewBtn.textContent = 'View';
+  viewBtn.addEventListener('click', () => openGameModal(game));
+  actions.appendChild(viewBtn);
+
+  body.appendChild(actions);
+  card.appendChild(body);
+
+  return card;
+}
+
+// ---------- Steam-style expanded view (modal) ----------
+
+let modalEl = null;
+
+function ensureModal(){
+  if (modalEl) return modalEl;
+
+  modalEl = document.createElement('div');
+  modalEl.className = 'game-modal-overlay';
+  modalEl.innerHTML = `
+    <div class="game-modal">
+      <button class="modal-close" aria-label="Close">&times;</button>
+      <div class="modal-hero"></div>
+      <div class="modal-body">
+        <h2 class="modal-title"></h2>
+        <span class="muted modal-date"></span>
+        <p class="modal-desc"></p>
+        <div class="modal-actions"></div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modalEl);
+
+  modalEl.querySelector('.modal-close').addEventListener('click', closeGameModal);
+  modalEl.addEventListener('click', (e) => {
+    if (e.target === modalEl) closeGameModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeGameModal();
+  });
+
+  return modalEl;
+}
+
+function openGameModal(game){
+  const modal = ensureModal();
+
+  const hero = modal.querySelector('.modal-hero');
+  hero.style.backgroundImage = game.cover ? `url('${game.cover}')` : 'none';
+
+  modal.querySelector('.modal-title').textContent = game.title;
+  modal.querySelector('.modal-date').textContent = dateLabel(game);
+  modal.querySelector('.modal-desc').textContent = game.longDescription || game.description || '';
+
+  const actionsWrap = modal.querySelector('.modal-actions');
+  actionsWrap.innerHTML = '';
+  const actionBtn = buildActionButton(game.action);
+  if (actionBtn){
+    actionBtn.classList.add('btn-large');
+    actionsWrap.appendChild(actionBtn);
   }
 
-  row.appendChild(info);
-  row.appendChild(dateSpan);
-  row.appendChild(buildActionEl(game.action));
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
 
-  return row;
+function closeGameModal(){
+  if (!modalEl) return;
+  modalEl.classList.remove('open');
+  document.body.style.overflow = '';
 }
 
 async function renderGamesList(containerId){
   const container = document.getElementById(containerId);
   if (!container) return;
+  container.classList.add('game-card-grid');
   const games = await loadGames();
   container.innerHTML = '';
-  games.forEach(g => container.appendChild(buildRow(g)));
+  games.forEach(g => container.appendChild(buildGameCard(g)));
 }
 
 document.addEventListener('DOMContentLoaded', () => {
