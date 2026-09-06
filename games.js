@@ -97,8 +97,20 @@ function buildRow(game){
   const row = document.createElement('div');
   row.className = 'row';
 
+  const info = document.createElement('div');
+  info.className = 'row-info';
+
   const title = document.createElement('span');
+  title.className = 'row-title';
   title.textContent = game.title;
+  info.appendChild(title);
+
+  if (game.description){
+    const desc = document.createElement('span');
+    desc.className = 'row-desc muted';
+    desc.textContent = game.description;
+    info.appendChild(desc);
+  }
 
   const dateSpan = document.createElement('span');
   dateSpan.className = 'muted';
@@ -108,13 +120,9 @@ function buildRow(game){
     dateSpan.textContent = `Expected: ${formatDate(game.predictedReleaseDate)}`;
   }
 
-  row.appendChild(title);
+  row.appendChild(info);
   row.appendChild(dateSpan);
   row.appendChild(buildActionEl(game.action));
-
-  if (game.description){
-    row.title = game.description; // shows as a tooltip on hover
-  }
 
   return row;
 }
