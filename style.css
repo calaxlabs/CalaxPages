@@ -339,6 +339,9 @@ a{ text-decoration: none; }
 
 .modal-actions{
   margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .amount{ font-weight: 600; text-align: right; }
