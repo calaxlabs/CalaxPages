@@ -20,27 +20,16 @@
   </header>
   <main class="content">
     <section class="grid">
-      
-      <div class="card">
-        <div class="card-header">
-          <h2>
-            <span data-game="gameTemplate.json" data-field="title"></span>
-          </h2>
-          <p data-game="gameTemplate.json" data-field="description"></p>
-        </div>
-      </div>
-      
-      <div class="card">
-        <div class="card-header">
-          <h2>
-            <span data-game="gameTemplate2.json" data-field="title"></span>
-          </h2>
-          <p data-game="gameTemplate2.json" data-field="description"></p>
-        </div>
-      </div>
-      
+
+      <div id="game-slot-1"></div>
+      <div id="game-slot-2"></div>
+
     </section>
   </main>
   <script src="games.js"></script>
+  <script>
+    renderSingleGame('game-slot-1', 'gameTemplate.json');
+    renderSingleGame('game-slot-2', 'gameTemplate2.json');
+  </script>
 </body>
 </html>
