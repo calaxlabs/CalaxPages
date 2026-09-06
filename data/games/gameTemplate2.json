@@ -5,8 +5,8 @@
   "cover": "https://via.placeholder.com/600x300",
   "status": "released",
   "releaseDate": "2026-03-02",
-  "action": {
-    "type": "play",
-    "url": "https://example.com/play/game2"
-  }
+  "actions": [
+    { "type": "play", "url": "https://example.com/play/game2" },
+    { "type": "download", "url": "https://example.com/downloads/game2.zip" }
+  ]
 }
