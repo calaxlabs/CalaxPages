@@ -113,6 +113,11 @@ function buildActionButton(action){
   return null;
 }
 
+function getActionsList(game){
+  if (Array.isArray(game.actions)) return game.actions;
+  if (game.action) return [game.action]; // backward-compatible with older single-action games
+  return [];
+}
 function dateLabel(game){
   return game.status === 'released'
     ? `Released: ${formatDate(game.releaseDate)}`
@@ -152,8 +157,10 @@ function buildGameCard(game){
   const actions = document.createElement('div');
   actions.className = 'game-card-actions';
 
-  const actionBtn = buildActionButton(game.action);
-  if (actionBtn) actions.appendChild(actionBtn);
+  getActionsList(game).forEach(action => {
+    const btn = buildActionButton(action);
+    if (btn) actions.appendChild(btn);
+  });
 
   const viewBtn = document.createElement('button');
   viewBtn.className = 'btn btn-view';
@@ -213,11 +220,13 @@ function openGameModal(game){
 
   const actionsWrap = modal.querySelector('.modal-actions');
   actionsWrap.innerHTML = '';
-  const actionBtn = buildActionButton(game.action);
-  if (actionBtn){
-    actionBtn.classList.add('btn-large');
-    actionsWrap.appendChild(actionBtn);
-  }
+  getActionsList(game).forEach(action => {
+    const btn = buildActionButton(action);
+    if (btn){
+      btn.classList.add('btn-large');
+      actionsWrap.appendChild(btn);
+    }
+  });
 
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
