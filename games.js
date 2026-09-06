@@ -21,6 +21,51 @@ async function loadGames(){
     .map(r => r.value);
 }
 
+// ---------- Single game / single field lookup ----------
+
+const gameCache = new Map(); // filename -> parsed JSON (so repeated lookups don't re-fetch)
+
+async function getGame(filename){
+  if (gameCache.has(filename)) return gameCache.get(filename);
+
+  const res = await fetch(`${GITHUB_BASE}/${filename}`);
+  if (!res.ok) throw new Error(`${filename} → ${res.status}`);
+  const data = await res.json();
+
+  gameCache.set(filename, data);
+  return data;
+}
+
+// Supports dot paths for nested values, e.g. "action.percent" or "action.url"
+function getField(obj, path){
+  return path.split('.').reduce((val, key) => (val == null ? undefined : val[key]), obj);
+}
+
+async function getGameField(filename, fieldPath){
+  const game = await getGame(filename);
+  return getField(game, fieldPath);
+}
+
+// Scans the page for elements like:
+// <span data-game="gameTemplate.json" data-field="title"></span>
+// and fills each one in with that game's value at that field.
+async function renderGameFields(){
+  const elements = document.querySelectorAll('[data-game][data-field]');
+  await Promise.all(
+    Array.from(elements).map(async (el) => {
+      const filename = el.dataset.game;
+      const fieldPath = el.dataset.field;
+      try{
+        const value = await getGameField(filename, fieldPath);
+        el.textContent = (value === undefined || value === null) ? '' : value;
+      }catch(err){
+        console.warn(`Could not load ${fieldPath} from ${filename}:`, err);
+        el.textContent = '';
+      }
+    })
+  );
+}
+
 function formatDate(dateStr){
   if (!dateStr) return 'TBA';
   const d = new Date(dateStr);
@@ -84,4 +129,5 @@ async function renderGamesList(containerId){
 
 document.addEventListener('DOMContentLoaded', () => {
   renderGamesList('games-list');
+  renderGameFields();
 });
