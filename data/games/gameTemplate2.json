@@ -1,0 +1,12 @@
+{
+  "title": "Game 2",
+  "description": "Playable directly in the browser, no download needed.",
+  "longDescription": "A longer paragraph describing this game — playable instantly online. Explain the setting, mechanics, and anything that would go on a store page.",
+  "cover": "https://via.placeholder.com/600x300",
+  "status": "released",
+  "releaseDate": "2026-03-02",
+  "action": {
+    "type": "play",
+    "url": "https://example.com/play/game2"
+  }
+}
