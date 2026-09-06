@@ -1,6 +1,8 @@
 {
-  "title": "template",
+  "title": "Game 1",
   "description": "A short one-line description of the game.",
+  "longDescription": "A longer paragraph describing the game in more depth — story, features, what makes it worth playing. Shown on the expanded view.",
+  "cover": "https://via.placeholder.com/600x300",
   "status": "released",
   "releaseDate": "2026-01-15",
   "action": {
