@@ -247,6 +247,21 @@ async function renderGamesList(containerId){
   games.forEach(g => container.appendChild(buildGameCard(g)));
 }
 
+// Renders ONE specific game's full card into ONE specific container.
+// Use this when you want a dedicated slot per game instead of the shared list.
+// <div id="game-slot-1"></div>  +  renderSingleGame('game-slot-1', 'gameTemplate.json')
+async function renderSingleGame(containerId, filename){
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  try{
+    const game = await getGame(filename);
+    container.innerHTML = '';
+    container.appendChild(buildGameCard(game));
+  }catch(err){
+    console.warn(`Could not load game ${filename} into #${containerId}:`, err);
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   renderGamesList('games-list');
   renderGameFields();
