@@ -148,6 +148,199 @@ a{ text-decoration: none; }
 
 .muted{ color: #6e6e6e; }
 
+/* ---------- Game card grid ---------- */
+.game-card-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.game-card{
+  background: #232325;
+  border: 1px solid #3a3a3c;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.game-card:hover{
+  transform: translateY(-2px);
+  border-color: #d4945a;
+}
+
+.game-card-cover{
+  height: 120px;
+  background: linear-gradient(135deg, #3a3a3c, #232325);
+  background-size: cover;
+  background-position: center;
+}
+
+.game-card-body{
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.game-card-body h3{
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.game-card-body p{
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.game-card-date{
+  font-size: 11px;
+}
+
+.game-card-actions{
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* ---------- Buttons ---------- */
+.btn{
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.btn-download{
+  background: #d4945a;
+  color: #1c1c1e;
+}
+.btn-download:hover{ background: #e0a56d; }
+
+.btn-play{
+  background: #6b8e6b;
+  color: #101410;
+}
+.btn-play:hover{ background: #7ea27e; }
+
+.btn-view{
+  background: transparent;
+  border-color: #3a3a3c;
+  color: #f5f0e8;
+}
+.btn-view:hover{ border-color: #6e6e6e; }
+
+.btn-large{
+  font-size: 14px;
+  padding: 12px 22px;
+}
+
+/* progress bar (for in-development games) */
+.progress-wrap{
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 120px;
+}
+.progress-bar{
+  height: 6px;
+  background: #3a3a3c;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.progress-fill{
+  height: 100%;
+  background: #d4945a;
+}
+.progress-label{
+  font-size: 11px;
+  color: #6e6e6e;
+}
+
+/* ---------- Steam-style expanded modal ---------- */
+.game-modal-overlay{
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.game-modal-overlay.open{ display: flex; }
+
+.game-modal{
+  background: #1c1c1e;
+  border: 1px solid #3a3a3c;
+  border-radius: 12px;
+  max-width: 640px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.modal-close{
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: rgba(0,0,0,0.4);
+  border: none;
+  color: #f5f0e8;
+  font-size: 20px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  line-height: 1;
+  z-index: 1;
+}
+
+.modal-hero{
+  height: 220px;
+  background: linear-gradient(135deg, #3a3a3c, #232325);
+  background-size: cover;
+  background-position: center;
+}
+
+.modal-body{
+  padding: 22px 26px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal-title{
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.modal-desc{
+  margin: 6px 0 0;
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: #d8d3c9;
+}
+
+.modal-actions{
+  margin-top: 10px;
+}
+
 .amount{ font-weight: 600; text-align: right; }
 .amount.positive{ color: #6b8e6b; }
 .amount.negative{ color: #c27878; }
